@@ -59,6 +59,7 @@ ACTION_COLUMNS = [
     "Priority",
     "Comment",
 ]
+COMPLETED_ACTION_STATUSES = {"Done", "Completed"}
 
 
 @st.cache_data
@@ -142,11 +143,15 @@ def compute_overall_status(readiness_df: pd.DataFrame) -> str:
     return "Green"
 
 
+def action_is_complete(status: str) -> bool:
+    return str(status).title() in COMPLETED_ACTION_STATUSES
+
+
 def is_overdue(due_value: pd.Timestamp | datetime | date | str | None, status: str) -> bool:
     due_date = pd.to_datetime(due_value, errors="coerce")
     if pd.isna(due_date):
         return False
-    return due_date.date() < date.today() and str(status).title() != "Done"
+    return due_date.date() < date.today() and not action_is_complete(status)
 
 
 def build_management_summary(
@@ -156,7 +161,8 @@ def build_management_summary(
         readiness_df["Status"].astype(str).str.title().isin(["Amber", "Red"])
     ]["Workstream"].tolist()
     open_high = actions_df[
-        actions_df["Priority"].eq("High") & ~actions_df["Status"].eq("Done")
+        actions_df["Priority"].eq("High")
+        & ~actions_df["Status"].apply(action_is_complete)
     ].copy()
     open_high["Overdue"] = open_high.apply(
         lambda row: is_overdue(row["Due date"], row["Status"]), axis=1
@@ -194,7 +200,7 @@ def build_management_summary(
         f"There are {len(open_high)} open high-priority actions, of which "
         f"{int(open_high['Overdue'].sum())} are overdue. "
         f"Key blockers: {blocker_text}. "
-        f"The 21 July 2026 dry run remains achievable if the identified issues are closed by the next checkpoint. "
+        f"The {DRY_RUN_DATE.strftime('%d %B %Y')} dry run remains achievable if the identified issues are closed by the next checkpoint. "
         f"{escalation_text}"
     )
 
@@ -301,9 +307,7 @@ header_cols[2].metric("Days Remaining", days_remaining)
 header_cols[3].metric("Last Updated", last_updated)
 header_cols[4].metric(
     "Open High Priority Actions",
-    int(
-        actions_df["Priority"].eq("High").mul(~actions_df["Status"].eq("Done")).sum()
-    ),
+    int(actions_df["Priority"].eq("High").mul(~actions_df["Status"].apply(action_is_complete)).sum()),
 )
 
 st.subheader("Overall Readiness Summary")
@@ -311,7 +315,7 @@ st.subheader("Overall Readiness Summary")
 card_columns = st.columns(3)
 for index, (_, row) in enumerate(readiness_df.iterrows()):
     workstream_actions = actions_df[actions_df["Workstream"] == row["Workstream"]]
-    open_actions = int((~workstream_actions["Status"].eq("Done")).sum())
+    open_actions = int((~workstream_actions["Status"].apply(action_is_complete)).sum())
     blockers = int(workstream_actions["Status"].eq("Blocked").sum())
     with card_columns[index % 3]:
         readiness_card(row, open_actions, blockers)
