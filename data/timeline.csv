@@ -1,0 +1,12 @@
+Activity,Workstream,Start Date,End Date,Status,Owner
+Migration dry run kickoff completed,All,2026-06-20,2026-06-23,Completed,PMO
+Environment access confirmed,Environment Readiness,2026-06-24,2026-06-28,In Progress,TBD
+Migration design signed off,Design,2026-06-24,2026-07-01,At Risk,TBD
+IDMC mappings completed,IDMC Build,2026-06-25,2026-07-05,In Progress,TBD
+T24 configuration completed,T24 Build,2026-06-25,2026-07-06,In Progress,TBD
+Test cases prepared,Testing,2026-07-01,2026-07-08,Not Started,TBD
+Dry run execution runbook drafted,Cutover,2026-07-01,2026-07-10,Not Started,TBD
+End-to-end connectivity test,Testing,2026-07-08,2026-07-12,Not Started,TBD
+Cutover command structure confirmed,Cutover,2026-07-08,2026-07-13,Blocked,TBD
+Final readiness checkpoint,All,2026-07-17,2026-07-17,Not Started,TBD
+Migration Dry Run Execution,All,2026-07-21,2026-07-21,Milestone,TBD
