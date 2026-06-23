@@ -1,0 +1,8 @@
+Action ID,Workstream,Action description,Owner,Due date,Status,Priority,Comment
+ACT-001,Environment Readiness,Escalate pending environment access for test users,Alice Morgan,2026-06-22,Open,High,Two tester IDs are still waiting for approval
+ACT-002,Design,Obtain formal migration design sign-off,Ben Carter,2026-07-01,In Progress,Medium,Review session booked with architecture lead
+ACT-003,IDMC Build,Confirm source-to-target field mapping exceptions,Chloe Patel,2026-06-30,Open,High,Awaiting business validation on three fields
+ACT-004,T24 Build,Validate configuration against migration parameter list,Daniel Hughes,2026-07-02,In Progress,Medium,Validation 60 percent complete
+ACT-005,Testing,Confirm end-to-end connectivity window with infrastructure,Emma Lewis,2026-07-03,Blocked,High,Infrastructure team has not yet confirmed the slot
+ACT-006,Cutover,Issue first dry run runbook draft,Farah Khan,2026-07-05,Open,Medium,Draft outline prepared
+ACT-007,Testing,Prepare detailed test case execution tracker,Emma Lewis,2026-07-08,Open,Low,Template in progress
